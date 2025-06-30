@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     // UI Text element that displays the current request.
     [SerializeField]
-    private Text promptText;
+    public Text promptText;
 
     // Counts for correct and incorrect selections.
     private int correctCount = 0;
