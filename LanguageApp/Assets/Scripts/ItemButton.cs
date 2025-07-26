@@ -19,12 +19,20 @@ public class ItemButton : MonoBehaviour
         }
     }
 
-    private void OnButtonClicked()
+    public void OnButtonClicked()
     {
         if (gameManager != null)
         {
+            Debug.Log($"Button clicked: {itemName}");
             gameManager.CheckSelection(itemName);
         }
+        else
+        {
+            Debug.LogError("GameManager is null in ItemButton");
+        }
     }
+
 }
+
+
 

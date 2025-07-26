@@ -1,77 +1,81 @@
+﻿// GameManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-/// <summary>
-/// Manages the game flow for requesting and selecting items.
-/// </summary>
 public class GameManager : MonoBehaviour
 {
-    // List of items that the player can select. These can be set in the Inspector.
-    [SerializeField]
-    private List<string> items = new List<string> { "apple", "ball", "shirt" };
-
-    // UI Text element that displays the current request.
-    [SerializeField]
-    public Text promptText;
-
-    // Counts for correct and incorrect selections.
-    private int correctCount = 0;
-    private int incorrectCount = 0;
-
-    // The item the player is currently being asked for.
+    public static GameManager Instance { get; private set; }
+    [SerializeField] private TextMeshProUGUI promptText;
+    [SerializeField] private GameObject[] itemButtons; // assign in Inspector
     private string currentItem;
 
-    private void Start()
+    private void Awake()
     {
-        // Start the game by showing the first item request.
-        ShowNextItem();
-    }
-
-    /// <summary>
-    /// Called by ItemButton when the player selects an item.
-    /// </summary>
-    /// <param name="itemName">The name of the item the player clicked.</param>
-    public void CheckSelection(string itemName)
-    {
-        if (string.Equals(itemName, currentItem))
+        if (Instance != null && Instance != this)
         {
-            // Player chose correctly.
-            correctCount++;
-            // Remove the item so it won't be asked again.
-            items.Remove(currentItem);
-            ShowNextItem();
+            Destroy(gameObject);
         }
         else
         {
-            // Player chose incorrectly.
-            incorrectCount++;
+            Instance = this;
         }
     }
 
-    /// <summary>
-    /// Selects a new item at random and updates the UI. If no items remain, clears the prompt.
-    /// </summary>
-    private void ShowNextItem()
+    private string currentRequest;
+
+    private List<string> items = new List<string> { "apple", "ball", "shoe", "cell phone" };
+
+    private void Start()
+    {
+        ShowNextItem();
+    }
+
+
+    public void StartRound()
+    {
+        int randomIndex = Random.Range(0, items.Count);
+        currentRequest = items[randomIndex];
+        promptText.text = $"Please give me the {currentRequest}.";
+    }
+
+    public bool CheckItem(string itemName)
+    {
+        return itemName == currentRequest;
+    }
+
+    public void CheckSelection(string itemName)
+    {
+        if (itemName == currentItem)
+        {
+            Debug.Log($"Correct! You gave the {itemName}.");
+            // You could increment correct count here.
+        }
+        else
+        {
+            Debug.Log($"Incorrect. The prompt was {currentItem}, but you selected {itemName}.");
+            // You could increment incorrect count here.
+        }
+
+        ShowNextItem(); // Automatically move to next prompt for demo simplicity
+    }
+
+    public void ShowNextItem()
     {
         if (items.Count == 0)
         {
-            // No more items to request.
-            currentItem = string.Empty;
-            if (promptText != null)
-            {
-                promptText.text = string.Empty;
-            }
+            promptText.text = "All items have been selected!";
             return;
         }
 
-        // Choose a random item from the remaining list.
-        currentItem = items[Random.Range(0, items.Count)];
+        // Get a random item
+        int index = Random.Range(0, items.Count);
+        currentItem = items[index];
 
-        // Update the UI text to ask for the item.
-        if (promptText != null)
-        {
-            promptText.text = $"Can I have the {currentItem}?";
-        }
+        // Update the prompt text
+        promptText.text = $"Please give me the {currentItem}.";
     }
+
+
 }
