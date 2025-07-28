@@ -9,9 +9,10 @@ public class DropTarget : MonoBehaviour, IDropHandler
 
         if (draggedItem != null)
         {
-            Debug.Log("Dropped item: " + draggedItem.itemName);
-            GameManager.Instance.CheckSelection(draggedItem.itemName);
+            draggedItem.wasDroppedOnTarget = true;  // Mark as successful
+            GameManager.Instance.CheckSelection(draggedItem);
         }
-    }
+    }    
+
 }
 

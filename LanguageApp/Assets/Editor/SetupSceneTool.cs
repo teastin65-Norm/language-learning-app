@@ -8,7 +8,7 @@ public class SetupSceneTool : MonoBehaviour
     public static void SetupScene()
     {
         // Create Canvas if it doesn't exist
-        Canvas canvas = FindObjectOfType<Canvas>();
+        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {
             GameObject canvasGO = new GameObject("Canvas");
@@ -40,7 +40,7 @@ public class SetupSceneTool : MonoBehaviour
         // Select GameManager in Hierarchy
         Selection.activeGameObject = gmGO;
 
-        Debug.Log("✅ Scene setup complete: Canvas, PromptText, GameManager created and linked.");
+        Debug.Log("Scene setup complete: Canvas, PromptText, GameManager created and linked.");
     }
 }
 

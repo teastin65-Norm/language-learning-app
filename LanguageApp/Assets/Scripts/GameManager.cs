@@ -38,6 +38,11 @@ public class GameManager : MonoBehaviour
         StartRound(); // Initialize the game properly
     }
 
+    //public string GetCurrentItem()
+    //{
+    //    return currentItem;
+    //}
+
     public void StartRound()
     {
         items = new List<string>(allItems);  // fresh copy of all items
@@ -50,8 +55,10 @@ public class GameManager : MonoBehaviour
         return itemName == currentRequest;
     }
 
-    public void CheckSelection(string itemName)
+    public void CheckSelection(DraggableItem item)
     {
+        string itemName = item.itemName;
+
         if (itemName == currentItem)
         {
             if (!correctItems.Contains(itemName))
@@ -67,6 +74,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Incorrect. The prompt was {currentItem}, but you selected {itemName}.");
             ShowFeedback($"Try again! That was the {itemName}.", false);
+            item.SnapBackToStart();
             return; // Don't proceed to next item
         }
 
